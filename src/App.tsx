@@ -1,12 +1,12 @@
 import "./App.css";
 import { useState } from "react";
+import { FieldValues } from "react-hook-form";
 
 import ExpenseList from "./components/ExpenseList";
 import ExpenseFilter from "./components/ExpenseFilter";
+import ExpenseForm from "./components/ExpenseForm";
 
 function App() {
-  const categories = ["food", "coffee", "transportation"];
-
   const [expenseList, setExpenseList] = useState([
     {
       id: 1,
@@ -39,11 +39,22 @@ function App() {
 
   return (
     <>
-      <ExpenseFilter
-        categories={categories}
-        value={selectedCategory}
-        onFilter={(category) => setSelectedCategory(category)}
-      />
+      <div className="mb-3">
+        <ExpenseForm
+          onSubmit={(expense) =>
+            setExpenseList([
+              ...expenseList,
+              { ...expense, id: expenseList.length + 1 },
+            ])
+          }
+        />
+      </div>
+      <div className="mb-3">
+        <ExpenseFilter
+          value={selectedCategory}
+          onFilter={(category) => setSelectedCategory(category)}
+        />
+      </div>
       <ExpenseList
         expenseList={filteredExpenses}
         onDelete={(expenseId) => deleteExpense(expenseId)}
